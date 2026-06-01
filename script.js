@@ -1,0 +1,102 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const splashScreen = document.getElementById('splashScreen');
+    const container = document.querySelector('.container');
+    
+    // Create Confetti Container
+    const confettiContainer = document.createElement('div');
+    confettiContainer.className = 'confetti-container';
+    document.body.appendChild(confettiContainer);
+
+    // Falling Flowers Effect
+    const fireConfetti = () => {
+        const colors = ['#d4af37', '#f4c2c2', '#ffb6c1', '#ffc0cb', '#ffffff']; // Added pink/flower colors
+        const particleCount = 60;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            
+            // Randomize shape (circle or petal-like)
+            particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '50% 0 50% 50%'; // petal shape
+            
+            const size = Math.random() * 8 + 6; // 6-14px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.position = 'absolute';
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Initial position (random across top of screen)
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `-20px`; // start above screen
+            particle.style.opacity = (Math.random() * 0.5 + 0.5).toString();
+            
+            confettiContainer.appendChild(particle);
+            
+            // Physics for falling
+            const tx = (Math.random() - 0.5) * 200; // random drift left/right
+            const ty = window.innerHeight + 50; // fall to bottom
+            const duration = 3000 + Math.random() * 4000; // fall slower
+            
+            particle.animate([
+                { 
+                    transform: `translate(0, 0) rotate(0deg)`,
+                    opacity: 1
+                },
+                { 
+                    transform: `translate(${tx}px, ${ty}px) rotate(${Math.random() * 720}deg)`,
+                    opacity: 0
+                }
+            ], {
+                duration: duration,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+            
+            setTimeout(() => {
+                if(particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, duration);
+        }
+    };
+
+    // Show Card almost immediately
+    setTimeout(() => {
+        container.classList.add('show-card');
+    }, 100);
+    
+    // Banner Video Logic & Ribbon
+    const bannerVideo = document.getElementById('bannerVideo');
+    const ribbonContainer = document.getElementById('ribbonContainer');
+
+    if (bannerVideo) {
+        // Ribbon Logic
+        if (ribbonContainer) {
+            const cutRibbon = () => {
+                // Fire the flower/confetti effect
+                fireConfetti();
+
+                // Add the cut class to trigger CSS animations
+                ribbonContainer.classList.add('cut');
+                
+                // After the ribbons slide away, fade out the container
+                setTimeout(() => {
+                    ribbonContainer.style.transition = "opacity 0.6s ease";
+                    ribbonContainer.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        ribbonContainer.style.display = 'none';
+                        // Unblur and play video
+                        bannerVideo.style.filter = 'blur(0px)';
+                        bannerVideo.muted = false;
+                        bannerVideo.play().catch(e => {
+                            bannerVideo.muted = true;
+                            bannerVideo.play();
+                        });
+                    }, 600);
+                }, 800);
+            };
+
+            ribbonContainer.addEventListener('click', cutRibbon);
+        }
+    }
+});
