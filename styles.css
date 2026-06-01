@@ -456,6 +456,47 @@ body {
     z-index: 1;
 }
 
+.unlucky-video-container.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 90vh;
+    max-width: none;
+    z-index: 2000;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    background: #000;
+    border-radius: 12px;
+}
+
+.unlucky-video-container.expanded #unluckyVideo {
+    object-fit: contain;
+}
+
+.expand-video-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.expand-video-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+
 /* Modernized Message Box */
 .message-content {
     margin: 0 auto 25px;
@@ -717,3 +758,29 @@ body {
 .social-icon.ig:hover { background: #e4405f; color: #fff; }
 .social-icon.yt:hover { background: #ff0000; color: #fff; }
 .social-icon.dripza:hover { transform: scale(1.1); box-shadow: 0 6px 14px rgba(212, 175, 55, 0.4); }
+
+/* Couple Photos Gallery */
+.couple-photos {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: #000;
+}
+
+.couple-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.couple-img.active {
+    opacity: 1;
+}
