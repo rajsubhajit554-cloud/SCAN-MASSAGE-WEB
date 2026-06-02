@@ -104,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 // Show photos container
                                 couplePhotos.style.display = 'block';
                                 
+                                // Play background music for photos
+                                const photoMusic = new Audio('bengali_wedding_music.mp3');
+                                photoMusic.loop = true;
+                                photoMusic.play().catch(e => console.log("Audio play failed:", e));
+                                
                                 // Cycle through images with crossfade
                                 let currentImgIndex = 0;
                                 setInterval(() => {
