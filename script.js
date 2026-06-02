@@ -69,6 +69,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const ribbonContainer = document.getElementById('ribbonContainer');
 
     if (bannerVideo) {
+        let photoMusic = null;
+        const couplePhotos = document.getElementById('couplePhotos');
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                if (photoMusic) photoMusic.pause();
+                if (bannerVideo) bannerVideo.pause();
+            } else {
+                if (couplePhotos && couplePhotos.style.display === 'block') {
+                    if (photoMusic) photoMusic.play().catch(e => console.log(e));
+                } else if (ribbonContainer && ribbonContainer.style.display === 'none') {
+                    if (bannerVideo) bannerVideo.play().catch(e => console.log(e));
+                }
+            }
+        });
+
         // Ribbon Logic
         if (ribbonContainer) {
             const cutRibbon = () => {
@@ -105,8 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 couplePhotos.style.display = 'block';
                                 
                                 // Play background music for photos
-                                const photoMusic = new Audio('bengali_wedding_music.mp3');
-                                photoMusic.loop = true;
+                                if (!photoMusic) {
+                                    photoMusic = new Audio('bengali_wedding_music.mp3');
+                                    photoMusic.loop = true;
+                                }
                                 photoMusic.play().catch(e => console.log("Audio play failed:", e));
                                 
                                 // Cycle through images with crossfade
